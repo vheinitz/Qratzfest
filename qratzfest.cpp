@@ -61,9 +61,22 @@ void Qratzfest::processReadyRead ()
 			QByteArray data = _scratchLink->read(imlen);
 			ui->tLog->appendPlainText( data );
 		}
-		
-		
-		
 	}
 }
 
+
+void Qratzfest::on_cbSendData_textChanged(const QString &arg1)
+{
+    if ( _scratchLink )
+    {
+        QString sendData = ui->cbSendData->currentText();
+        QByteArray msg;
+		msg.resize(4);
+        msg[0]=0;
+        msg[1]=0;
+        msg[2]=0;
+        msg[3]=sendData.size();
+        msg.append( sendData );
+        _scratchLink->write(msg);
+    }
+}

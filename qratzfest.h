@@ -26,6 +26,8 @@ private slots:
     void processReadyRead ();
 
 
+    void on_cbSendData_textChanged(const QString &arg1);
+
 private:
     Ui::Qratzfest *ui;
     QTcpSocket *_scratchLink;

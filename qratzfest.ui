@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>502</width>
+    <width>586</width>
     <height>497</height>
    </rect>
   </property>
@@ -95,6 +95,13 @@
      </layout>
     </item>
     <item>
+     <widget class="QComboBox" name="cbSendData">
+      <property name="editable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -117,7 +124,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>502</width>
+     <width>586</width>
      <height>21</height>
     </rect>
    </property>
