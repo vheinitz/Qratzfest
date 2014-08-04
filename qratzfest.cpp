@@ -14,7 +14,7 @@ Qratzfest::Qratzfest(QWidget *parent) :
 	connect(&_comPortCheck, SIGNAL(timeout()), this, SLOT(checkComPort()) );
 
     _connectionCheck.setInterval(200);
-	_comPortCheck.setInterval(2000);
+	_comPortCheck.setInterval(100);
 	
 	
 	
@@ -73,9 +73,37 @@ void Qratzfest::checkComPort()
 			bool dtr = ms.DTR;
 			bool rts = ms.RTS;
 			*/
-			bool dsr = _comport->DSR();
-			int dummy = dsr;
-			
+			QStringList vars;
+			if (_comport->DCD())
+				vars <<"IN1_ON";
+			else
+				vars <<"IN1_OFF";
+
+			broadcast( vars );
+			vars.clear();
+
+			if (_comport->DSR())
+				vars <<"IN2_ON";
+			else
+				vars <<"IN2_OFF";
+
+			broadcast( vars );
+			vars.clear();
+
+			if (_comport->CTS())
+				vars <<"IN3_ON";
+			else
+				vars <<"IN3_OFF";
+
+			broadcast( vars );
+			vars.clear();
+
+			if (_comport->RI())
+				vars <<"IN4_ON";
+			else
+				vars <<"IN4_OFF";
+
+			broadcast( vars );
 
 		}
 
@@ -154,3 +182,25 @@ void Qratzfest::on_cbSendData_textChanged(const QString &arg1)
         _scratchLink->write(msg);
     }
 }
+
+void Qratzfest::broadcast(const QStringList &vars)
+{
+	QString data = "broadcast";
+    if ( _scratchLink )
+    {
+        foreach (QString v, vars)
+		{
+			data+=QString(" \"%1\"").arg(v);
+		}
+		QString sendData = data;
+        QByteArray msg;
+		msg.resize(4);
+        msg[0]=0;
+        msg[1]=0;
+        msg[2]=0;
+        msg[3]=sendData.size();
+        msg.append( sendData );
+        _scratchLink->write(msg);
+    }
+}
+

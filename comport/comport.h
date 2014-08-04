@@ -118,6 +118,9 @@ public:
     Parity parity () const;
 
 	bool DSR () const;
+	bool DCD () const;
+	bool CTS () const;
+	bool RI () const;
 	void setDTR (bool);
 	void setRTS (bool);
 	void setBreak (bool);

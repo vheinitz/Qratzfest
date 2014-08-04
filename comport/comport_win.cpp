@@ -525,12 +525,92 @@ bool COMPort::DSR () const
     PD_TRACE("");
     if (_portHandle != HFILE_ERROR)
     {
-        DCB & aDCB = *((LPDCB)_DCB);
-        return aDCB.fDsrSensitivity;
+       DWORD dwModemStatus;
+	   BOOL  fCTS, fDSR, fRING, fRLSD;
+
+	   if (!GetCommModemStatus((HANDLE)_portHandle, &dwModemStatus))
+		  // Error in GetCommModemStatus;
+		  return false;
+
+	   fCTS = MS_CTS_ON & dwModemStatus;
+	   fDSR = MS_DSR_ON & dwModemStatus;
+	   fRING = MS_RING_ON & dwModemStatus;
+	   fRLSD = MS_RLSD_ON & dwModemStatus;
+	   return fDSR;
+    }
+    return 0;
+}
+
+
+//-----------------------------------------------------------------------------
+bool COMPort::DCD () const
+{
+    PD_TRACE("");
+    if (_portHandle != HFILE_ERROR)
+    {
+       DWORD dwModemStatus;
+	   BOOL  fCTS, fDSR, fRING, fRLSD;
+
+	   if (!GetCommModemStatus((HANDLE)_portHandle, &dwModemStatus))
+		  // Error in GetCommModemStatus;
+		  return false;
+
+	   fCTS = MS_CTS_ON & dwModemStatus;
+	   fDSR = MS_DSR_ON & dwModemStatus;
+	   fRING = MS_RING_ON & dwModemStatus;
+	   fRLSD = MS_RLSD_ON & dwModemStatus;
+	   return fRLSD;
+    }
+    return 0;
+}
+
+
+//-----------------------------------------------------------------------------
+bool COMPort::CTS () const
+{
+    PD_TRACE("");
+    if (_portHandle != HFILE_ERROR)
+    {
+       DWORD dwModemStatus;
+	   BOOL  fCTS, fDSR, fRING, fRLSD;
+
+	   if (!GetCommModemStatus((HANDLE)_portHandle, &dwModemStatus))
+		  // Error in GetCommModemStatus;
+		  return false;
+
+	   fCTS = MS_CTS_ON & dwModemStatus;
+	   fDSR = MS_DSR_ON & dwModemStatus;
+	   fRING = MS_RING_ON & dwModemStatus;
+	   fRLSD = MS_RLSD_ON & dwModemStatus;
+	   return fCTS;
     }
     return 0;
 }
 //-----------------------------------------------------------------------------
+
+
+bool COMPort::RI () const
+{
+    PD_TRACE("");
+    if (_portHandle != HFILE_ERROR)
+    {
+       DWORD dwModemStatus;
+	   BOOL  fCTS, fDSR, fRING, fRLSD;
+
+	   if (!GetCommModemStatus((HANDLE)_portHandle, &dwModemStatus))
+		  // Error in GetCommModemStatus;
+		  return false;
+
+	   fCTS = MS_CTS_ON & dwModemStatus;
+	   fDSR = MS_DSR_ON & dwModemStatus;
+	   fRING = MS_RING_ON & dwModemStatus;
+	   fRLSD = MS_RLSD_ON & dwModemStatus;
+	   return fRING;
+    }
+    return 0;
+}
+//-----------------------------------------------------------------------------
+
 
 void COMPort::setDTR (bool s)
 {

@@ -30,6 +30,7 @@ private slots:
 
 
     void on_cbSendData_textChanged(const QString &arg1);
+	void broadcast(const QStringList &arg1);
 
 private:
     Ui::Qratzfest *ui;
