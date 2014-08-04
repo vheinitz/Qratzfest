@@ -5,6 +5,7 @@
 #include <QTcpSocket>
 #include <QTimer>
 #include <QProcess>
+#include "comport/comport.h"
 
 namespace Ui {
 class Qratzfest;
@@ -20,7 +21,9 @@ public:
     
 private slots:
     void on_bSelectScratchExe_clicked();
-    void checkConnection();
+    
+	void checkConnection();
+	void checkComPort();
     void processDisconnected ();
     void processError ( QAbstractSocket::SocketError socketError );
     void processReadyRead ();
@@ -32,7 +35,10 @@ private:
     Ui::Qratzfest *ui;
     QTcpSocket *_scratchLink;
     QTimer _connectionCheck;
+	QTimer _comPortCheck;
+	QString _currentComport;
 	QProcess *_scratchExe;
+	COMPort *_comport;
 };
 
 #endif // QRATZFEST_H

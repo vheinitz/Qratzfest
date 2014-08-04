@@ -117,6 +117,11 @@ public:
     COMPort& setParity ( Parity Param );
     Parity parity () const;
 
+	bool DSR () const;
+	void setDTR (bool);
+	void setRTS (bool);
+	void setBreak (bool);
+
     COMPort& setDataBits ( DataBits Param );
     DataBits dataBits () const;
 

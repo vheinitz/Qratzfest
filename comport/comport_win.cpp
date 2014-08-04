@@ -100,7 +100,7 @@ void COMPort::close()
     _portHandle = HFILE_ERROR;
 }
 
-//Implementation basen on code from Norbert Wiedmann. 
+
 TSerialInterfaceInfoList COMPort::availableInterfaces()
 {
     PD_TRACE("");
@@ -518,6 +518,55 @@ COMPort::Parity COMPort::parity () const
     return COMPort::Parity();
 }
 
+
+//-----------------------------------------------------------------------------
+bool COMPort::DSR () const
+{
+    PD_TRACE("");
+    if (_portHandle != HFILE_ERROR)
+    {
+        DCB & aDCB = *((LPDCB)_DCB);
+        return aDCB.fDsrSensitivity;
+    }
+    return 0;
+}
+//-----------------------------------------------------------------------------
+
+void COMPort::setDTR (bool s)
+{
+	PD_TRACE("");
+    if (_portHandle != HFILE_ERROR)
+    {
+        DCB & aDCB = *((LPDCB)_DCB);
+        aDCB.fDtrControl = s;
+    }
+    setState();
+}
+//-----------------------------------------------------------------------------
+
+void COMPort::setRTS (bool s)
+{
+	PD_TRACE("");
+    if (_portHandle != HFILE_ERROR)
+    {
+        DCB & aDCB = *((LPDCB)_DCB);
+		aDCB.fRtsControl = s;
+    }
+    setState();
+}
+//-----------------------------------------------------------------------------
+
+void COMPort::setBreak (bool s)
+{
+	PD_TRACE("");
+    if (_portHandle != HFILE_ERROR)
+    {
+        if( s)
+			SetCommBreak( (HANDLE)_portHandle );
+		else
+			ClearCommBreak( (HANDLE)_portHandle );
+    }
+}
 
 //-----------------------------------------------------------------------------
 COMPort::DataBits COMPort::dataBits () const
