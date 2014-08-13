@@ -77,7 +77,7 @@ void Qratzfest::checkComPort()
 			if (_comport->DCD())
 				vars <<"IN1_ON";
 			else
-				vars <<"IN1_OFF";
+				vars <<"IN1_OFF";			
 
 			broadcast( vars );
 			vars.clear();
@@ -104,6 +104,11 @@ void Qratzfest::checkComPort()
 				vars <<"IN4_OFF";
 
 			broadcast( vars );
+
+			ui->cbIn1->setChecked(_comport->DCD());
+			ui->cbIn2->setChecked(_comport->DSR());
+			ui->cbIn3->setChecked(_comport->CTS());
+			ui->cbIn4->setChecked(_comport->RI());
 
 		}
 
@@ -204,3 +209,27 @@ void Qratzfest::broadcast(const QStringList &vars)
     }
 }
 
+
+void Qratzfest::on_cbO1_clicked(bool checked)
+{
+    if (_comport )
+    {
+        _comport->setBreak(checked);
+    }
+}
+
+void Qratzfest::on_cbO2_clicked(bool checked)
+{
+    if (_comport )
+    {
+        _comport->setDTR(checked);
+    }
+}
+
+void Qratzfest::on_cbO3_clicked(bool checked)
+{
+    if (_comport )
+    {
+        _comport->setRTS(checked);
+    }
+}

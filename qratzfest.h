@@ -32,6 +32,12 @@ private slots:
     void on_cbSendData_textChanged(const QString &arg1);
 	void broadcast(const QStringList &arg1);
 
+    void on_cbO1_clicked(bool checked);
+
+    void on_cbO2_clicked(bool checked);
+
+    void on_cbO3_clicked(bool checked);
+
 private:
     Ui::Qratzfest *ui;
     QTcpSocket *_scratchLink;
