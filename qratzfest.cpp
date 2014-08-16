@@ -104,11 +104,14 @@ void Qratzfest::checkComPort()
 				vars <<"IN4_OFF";
 
 			broadcast( vars );
-
-			ui->cbIn1->setChecked(_comport->DCD());
-			ui->cbIn2->setChecked(_comport->DSR());
-			ui->cbIn3->setChecked(_comport->CTS());
-			ui->cbIn4->setChecked(_comport->RI());
+			bool set = _comport->DCD();
+			ui->cbIn1->setChecked(set);
+			set = _comport->DSR();
+			ui->cbIn2->setChecked(set);
+			set = _comport->CTS();
+			ui->cbIn3->setChecked(set);
+			set = _comport->RI();
+			ui->cbIn4->setChecked(set);
 
 		}
 
@@ -123,7 +126,7 @@ void Qratzfest::checkConnection()
 		_scratchLink->connectToHost( "localhost", 42001 );
 		connect(_scratchLink, SIGNAL(readyRead()), this, SLOT(processReadyRead()) );
 		connect(_scratchLink, SIGNAL(disconnected()), this, SLOT(processDisconnected()) );
-		connect(_scratchLink, SIGNAL(error()), this, SLOT(processError ( QAbstractSocket::SocketError ) ) );
+		connect(_scratchLink, SIGNAL(error( QAbstractSocket::SocketError)), this, SLOT(processError ( QAbstractSocket::SocketError ) ) );
 		_connectionCheck.setInterval(4000);
 	}
 }
