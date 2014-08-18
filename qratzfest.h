@@ -38,6 +38,16 @@ private slots:
 
     void on_cbO3_clicked(bool checked);
 
+    void on_actionInfo_triggered();
+
+    void on_cbIn1_clicked(bool checked);
+
+    void on_cbIn2_clicked(bool checked);
+
+    void on_cbIn3_clicked(bool checked);
+
+    void on_cbIn4_clicked(bool checked);
+
 private:
     Ui::Qratzfest *ui;
     QTcpSocket *_scratchLink;

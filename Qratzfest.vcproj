@@ -215,6 +215,10 @@
 				>
 			</File>
 			<File
+				RelativePath="persistence.cpp"
+				>
+			</File>
+			<File
 				RelativePath="qratzfest.cpp"
 				>
 			</File>
@@ -227,6 +231,32 @@
 			<File
 				RelativePath="comport\comport.h"
 				>
+			</File>
+			<File
+				RelativePath="persistence.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC persistence.h"
+						CommandLine="C:\Qt\4.8.4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\Qt\4.8.4\include\QtCore&quot; -I&quot;c:\Qt\4.8.4\include\QtNetwork&quot; -I&quot;c:\Qt\4.8.4\include\QtGui&quot; -I&quot;c:\Qt\4.8.4\include&quot; -I&quot;c:\Qt\4.8.4\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -Ic:\Qt\4.8.4\mkspecs\default -D_MSC_VER=1500 -DWIN32 persistence.h -o debug\moc_persistence.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="C:\Qt\4.8.4\bin\moc.exe;persistence.h"
+						Outputs="debug\moc_persistence.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC persistence.h"
+						CommandLine="C:\Qt\4.8.4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\Qt\4.8.4\include\QtCore&quot; -I&quot;c:\Qt\4.8.4\include\QtNetwork&quot; -I&quot;c:\Qt\4.8.4\include\QtGui&quot; -I&quot;c:\Qt\4.8.4\include&quot; -I&quot;c:\Qt\4.8.4\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -Ic:\Qt\4.8.4\mkspecs\default -D_MSC_VER=1500 -DWIN32 persistence.h -o release\moc_persistence.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="C:\Qt\4.8.4\bin\moc.exe;persistence.h"
+						Outputs="release\moc_persistence.cpp"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="qratzfest.h"
@@ -260,6 +290,30 @@
 			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
 			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}"
 			>
+			<File
+				RelativePath="release\moc_persistence.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="debug\moc_persistence.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath="release\moc_qratzfest.cpp"
 				>

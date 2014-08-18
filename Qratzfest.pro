@@ -13,8 +13,10 @@ TEMPLATE = app
 SOURCES += main.cpp\
         qratzfest.cpp\
 		comport/comport.cpp \
+		persistence.cpp\
 
 HEADERS  += qratzfest.h\
 		comport/comport.h \
+		persistence.h\
 
 FORMS    += qratzfest.ui

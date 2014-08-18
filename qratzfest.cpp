@@ -1,5 +1,9 @@
 #include "qratzfest.h"
 #include "ui_qratzfest.h"
+#include <QMessageBox>
+#include <persistence.h>
+
+static const char * Version = "0.2";
 
 Qratzfest::Qratzfest(QWidget *parent) :
     QMainWindow(parent),
@@ -9,6 +13,17 @@ Qratzfest::Qratzfest(QWidget *parent) :
 	_comport(0)
 {
     ui->setupUi(this);
+
+	PERSISTENCE_INIT("Valentin Heinitz", "Qratzfest");
+	PERSISTENT("NameOut1", ui->eNameOut1, "text");
+	PERSISTENT("NameOut2", ui->eNameOut2, "text");
+	PERSISTENT("NameOut3", ui->eNameOut3, "text");
+	PERSISTENT("NameIn1", ui->eNameIn1, "text");
+	PERSISTENT("NameIn2", ui->eNameIn2, "text");
+	PERSISTENT("NameIn3", ui->eNameIn3, "text");
+	PERSISTENT("NameIn4", ui->eNameIn4, "text");
+	PERSISTENT("SimulationMode", ui->cbSimulationMode, "checked");
+
 	
 	connect(&_connectionCheck, SIGNAL(timeout()), this, SLOT(checkConnection()) );
 	connect(&_comPortCheck, SIGNAL(timeout()), this, SLOT(checkComPort()) );
@@ -40,6 +55,9 @@ void Qratzfest::on_bSelectScratchExe_clicked()
 
 void Qratzfest::checkComPort()
 {
+	if ( ui->cbSimulationMode->isChecked() )
+		return;
+
 	if (!_comport )
 	{
 		if ( !ui->cbComPort->currentText().isEmpty() )
@@ -74,44 +92,40 @@ void Qratzfest::checkComPort()
 			bool rts = ms.RTS;
 			*/
 			QStringList vars;
+			ui->cbIn1->setChecked(_comport->DCD());
+			ui->cbIn2->setChecked(_comport->DSR());
+			ui->cbIn3->setChecked(_comport->CTS());
+			ui->cbIn4->setChecked(_comport->RI());
 			if (_comport->DCD())
-				vars <<"IN1_ON";
+				vars <<QString("%1_ON").arg(ui->eNameIn1->text());
 			else
-				vars <<"IN1_OFF";			
+				vars <<QString("%1_OFF").arg(ui->eNameIn1->text());
 
 			broadcast( vars );
 			vars.clear();
 
 			if (_comport->DSR())
-				vars <<"IN2_ON";
+				vars <<QString("%1_ON").arg(ui->eNameIn2->text());
 			else
-				vars <<"IN2_OFF";
+				vars <<QString("%1_OFF").arg(ui->eNameIn2->text());
 
 			broadcast( vars );
 			vars.clear();
 
 			if (_comport->CTS())
-				vars <<"IN3_ON";
+				vars <<QString("%1_ON").arg(ui->eNameIn3->text());
 			else
-				vars <<"IN3_OFF";
+				vars <<QString("%1_ON").arg(ui->eNameIn3->text());
 
 			broadcast( vars );
 			vars.clear();
 
 			if (_comport->RI())
-				vars <<"IN4_ON";
+				vars <<QString("%1_ON").arg(ui->eNameIn4->text());
 			else
-				vars <<"IN4_OFF";
+				vars <<QString("%1_ON").arg(ui->eNameIn4->text());
 
 			broadcast( vars );
-			bool set = _comport->DCD();
-			ui->cbIn1->setChecked(set);
-			set = _comport->DSR();
-			ui->cbIn2->setChecked(set);
-			set = _comport->CTS();
-			ui->cbIn3->setChecked(set);
-			set = _comport->RI();
-			ui->cbIn4->setChecked(set);
 
 		}
 
@@ -154,20 +168,33 @@ void Qratzfest::processReadyRead ()
 			imlen = mlen[0]<<12 | mlen[1]<<8 | mlen[2]<<4 | mlen[3];
 			QString data = _scratchLink->read(imlen);
 			ui->tLog->appendPlainText( data );
-			if( _comport )
+			
+			QStringList vars = data.split(" \"");
+			foreach (QString v, vars)
 			{
-				QStringList vars = data.split(" \"");
-				foreach (QString v, vars)
+				QString k = v.section("\"",0,0);
+				QString val = v.section(" ",1);
+				
+				if ( k == ui->eNameOut1->text() )
 				{
-					QString k = v.section("\"",0,0);
-					QString val = v.section(" ",1);
-					
-					if (k == "out1")
+					if( _comport )
 						_comport->setBreak(val.toInt());
-					else if (k == "out2")
+
+					ui->cbO1->setChecked( val.toInt() );
+				}
+				else if (k == ui->eNameOut2->text() )
+				{
+					if( _comport )
 						_comport->setDTR(val.toInt());
-					else if (k == "out3")
+
+					ui->cbO2->setChecked( val.toInt() );
+				}
+				else if (k == ui->eNameOut3->text() )
+				{
+					if( _comport )
 						_comport->setRTS(val.toInt());
+
+					ui->cbO3->setChecked( val.toInt() );
 				}
 			}
 		}
@@ -198,8 +225,9 @@ void Qratzfest::broadcast(const QStringList &vars)
     {
         foreach (QString v, vars)
 		{
-			data+=QString(" \"%1\"").arg(v);
+			data+=QString(" \"%1\"").arg(v);			
 		}
+		ui->tLog->appendPlainText( QString(">>> %1").arg(data) );
 		QString sendData = data;
         QByteArray msg;
 		msg.resize(4);
@@ -235,4 +263,39 @@ void Qratzfest::on_cbO3_clicked(bool checked)
     {
         _comport->setRTS(checked);
     }
+}
+
+void Qratzfest::on_actionInfo_triggered()
+{
+	QMessageBox msg;
+	msg.setText(tr("<h1>Qratzfest</h1><br/>Hardware-proxy for MIT Scratch. Version %1<br/><small>Copyright: Valentin Heinitz, vheinitz@googlemail.com<br/>License: MIT-License</small>").arg(Version)); 
+	msg.exec();
+}
+
+void Qratzfest::on_cbIn1_clicked(bool checked)
+{
+	QStringList vars;
+	vars <<QString("%1_%2").arg(ui->eNameIn1->text()).arg(checked?"ON":"OFF");
+	broadcast( vars );
+}
+
+void Qratzfest::on_cbIn2_clicked(bool checked)
+{
+	QStringList vars;
+	vars <<QString("%1_%2").arg(ui->eNameIn2->text()).arg(checked?"ON":"OFF");
+	broadcast( vars );
+}
+
+void Qratzfest::on_cbIn3_clicked(bool checked)
+{
+	QStringList vars;
+	vars <<QString("%1_%2").arg(ui->eNameIn3->text()).arg(checked?"ON":"OFF");
+	broadcast( vars );
+}
+
+void Qratzfest::on_cbIn4_clicked(bool checked)
+{
+	QStringList vars;
+	vars <<QString("%1_%2").arg(ui->eNameIn4->text()).arg(checked?"ON":"OFF");
+	broadcast( vars );
 }

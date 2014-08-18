@@ -4,8 +4,8 @@
 
 [Setup]
 AppName=Qratzfest
-AppVerName=Qratzfest 0.1
-OutputBaseFilename=QratzfestSetup_0.1
+AppVerName=Qratzfest 0.2
+OutputBaseFilename=QratzfestSetup_0.2
 AppPublisher=Valentin Heinitz
 AppPublisherURL=http://www.heinitz-it.de
 AppSupportURL=http://www.heinitz-it.de
@@ -16,7 +16,7 @@ DefaultGroupName=heinitz-it\Qratzfest
 DisableDirPage=no
 DisableProgramGroupPage=yes
 AllowNoIcons=yes
-OutputDir=..\..\Releases
+OutputDir=..\exe
 BackColor=clGreen
 ;SetupIconFile=..\Qratzfest\icon.ico
 Compression=lzma
@@ -38,6 +38,7 @@ Source: "c:\Qt\4.8.4\bin\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "c:\Qt\4.8.4\bin\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "c:\Qt\4.8.4\bin\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qratzfest.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\bin\*.*"; DestDir: "{app}"; Flags: ignoreversion
 
 
 ;Source: "..\data\Readme.txt"; DestDir: "{userdocs}\\heinitz-it\\Qratzfest\\"; Flags: ignoreversion
