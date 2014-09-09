@@ -74,8 +74,8 @@ bool COMPort::open ( const char * portName )
         purge();
         _DCB = new char [sizeof(DCB)];
         getState();
-        setBlockingMode();
-        setHandshaking();
+        //setBlockingMode();
+        //setHandshaking();
         return true;
     }
 	else{
@@ -327,10 +327,19 @@ unsigned long COMPort::write ( const void *inBuffer
                              , const unsigned long inBufSize
                              )
 {
+	
     PD_TRACE("");
     DWORD charsWritten = 0;
     if (_portHandle != HFILE_ERROR)
     {
+		COMMTIMEOUTS commTimeout;	 
+		if (_portHandle != HFILE_ERROR)
+		{
+			GetCommTimeouts ( (HANDLE(_portHandle))
+						  , &commTimeout
+						  );  
+		}
+
         WriteFile ( (HANDLE(_portHandle))
                 , inBuffer
                 , inBufSize
@@ -374,7 +383,7 @@ bool COMPort::isxONxOFF () const
 void COMPort::setNonBlockingMode ( )
 {
     PD_TRACE("");
-    setBlockingMode( MAXDWORD, 0,0, 0,0 );
+    setBlockingMode( MAXDWORD, 0,0, 1,100 );
 }
 
 
@@ -387,7 +396,7 @@ void COMPort::setBlockingMode ( unsigned long inReadInterval
                                   )
 {
     PD_TRACE("");
-    COMMTIMEOUTS commTimeout;
+    COMMTIMEOUTS commTimeout;	 
     if (_portHandle != HFILE_ERROR)
     {
         GetCommTimeouts ( (HANDLE(_portHandle))

@@ -48,6 +48,8 @@ private slots:
 
     void on_cbIn4_clicked(bool checked);
 
+    void on_eSendSerData_returnPressed();
+
 private:
     Ui::Qratzfest *ui;
     QTcpSocket *_scratchLink;
